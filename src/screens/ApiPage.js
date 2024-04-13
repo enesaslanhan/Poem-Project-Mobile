@@ -1,30 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { View, Text, FlatList } from "react-native";
+import axios from "axios";
 
 const ApiPage = () => {
-  const [posts, setPosts] = useState([]);
+  const [users, setUsers] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const apiUrl="http://10.0.2.2:57111/api/poems/getall"
-        const response = await axios.get(apiUrl);
-        const jsonData = response.data;
-        console.log(jsonData)
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
+  useEffect(async () => {
+    await axios
+      .get("http://192.168.1.61:81/api/users/getall")
+      .then((res) => setUsers(res.data.data))
+      .catch((error) => console.error(error));
   }, []);
 
-  
-
   return (
-    <View>
-      
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <View>
+        <View>
+          {users.map((user) => (
+            <Text key={user}>{user.email}</Text>
+          ))}
+        </View>
+      </View>
     </View>
   );
 };
