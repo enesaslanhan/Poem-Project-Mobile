@@ -3,10 +3,18 @@ import React, { useState, useEffect } from "react";
 import BaseButton from "../components/BaseButton";
 import BaseTextInput from "../components/BaseTextInput";
 import axios from "axios";
-
-const PoemsPage = () => {
+const PoemsPage = ({route}) => {
   const [poems, setPoems] = useState([]);
   const [index, setIndex] = useState(0);
+  const[score,setScore]=useState();
+  const {BaseuserId}=route.params;
+  const poemScoreModel={
+    id:0,
+    poemId:null,
+    score:null,
+    userId:null
+
+  }
   useEffect(() => {
     const getAllPoems = async () => {
       try {
@@ -14,13 +22,14 @@ const PoemsPage = () => {
           "http://192.168.1.61:81/api/poems/getall"
         );
         setPoems(response.data.data);
+        console.log(BaseuserId)
         console.log(poems[0]); // setState işlemi tamamlandıktan sonra loglama yapılacak
       } catch (error) {
         console.error("Error fetching poems:", error);
       }
     };
-
-    getAllPoems();
+    
+    getAllPoems();  
   }, []);
 
   const next = () => {
@@ -37,6 +46,22 @@ const PoemsPage = () => {
       setIndex(index - 1);
     }
   };
+
+  const setPeomScore=async()=>{
+    poemScoreModel.userId=BaseuserId;
+    poemScoreModel.poemId=poems[index].id
+    poemScoreModel.score=parseInt(score);
+    const response= await axios.post("http://192.168.1.61:81/api/poemscores/add",poemScoreModel)
+    console.log(response.data)
+    if (response) {
+      alert("puan verildi")
+      setScore("");
+    }
+    else{
+      alert(response.data.message)
+    }
+    
+  }
 
   return (
     <SafeAreaView style={styles.Container}>
@@ -97,12 +122,14 @@ const PoemsPage = () => {
           title="Puan"
           handlePlaceHolder="0-10 arasında puan veriniz."
           handleKeyboardType="numeric"
+          handleOnChangeText={setScore}
         />
         <BaseButton
           title="Göder"
           setWidht="100%"
           buttonColor="red"
-          buttonColorPressed="black"         
+          buttonColorPressed="black"    
+          handleOnPress={()=>setPeomScore()}     
         />
       </View>
     </SafeAreaView>

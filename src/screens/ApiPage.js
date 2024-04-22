@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, FlatList } from "react-native";
-import axios from "axios";
-
+import userService from "../services/user.service"
 const ApiPage = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(async () => {
-    await axios
-      .get("http://192.168.1.61:81/api/users/getall")
-      .then((res) => setUsers(res.data.data))
-      .catch((error) => console.error(error));
+    const response=userService.getAllUsers();
+    console.log(response)
   }, []);
 
   return (

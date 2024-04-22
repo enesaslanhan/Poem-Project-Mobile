@@ -27,7 +27,7 @@ const LoginPage = () => {
     console.log(response.data)
     if (response.data.data) {
       if (response.data.data.password==password) {
-        navigation.navigate("Poems")
+        navigation.navigate("Poems",{BaseuserId:response.data.data.id})
       }
       else
         alert("Şifre yanlış tekrar deneyiniz.")

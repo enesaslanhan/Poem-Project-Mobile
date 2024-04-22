@@ -1,11 +1,36 @@
-import { SafeAreaView, StyleSheet, Text, View,Image } from 'react-native'
-import React from 'react'
+import { SafeAreaView, StyleSheet, Text, View,Image, } from 'react-native'
+import React ,{useEffect,useState}from 'react'
 import BaseTextInput from '../components/BaseTextInput'
 import BaseButton from '../components/BaseButton'
 import { useNavigation } from '@react-navigation/native'
+import axios from "axios";
 
 const SignUpPage = () => {
   const navigation=useNavigation()
+  const UserModel={
+    id:0,
+    fakeName:null,
+    email:null,
+    password:null
+  }
+  const [email,setEmail]=useState();
+  const [fakeName,setFakeName]=useState();
+  const [password,setPassword]=useState();
+  SignUpUser=async()=>{
+    UserModel.email=email;
+    UserModel.fakeName=fakeName;
+    UserModel.password=password
+    const response = await axios.post('http://192.168.1.61:81/api/users/add',UserModel)
+    console.log(response.data)
+    if (response.data.succes) {
+      alert(response.data.message)
+      navigation.navigate("Login")
+    }
+    else{
+      alert(response.data.message)
+    }
+
+  }
   return (
     <SafeAreaView style={styles.Container}>
       
@@ -20,15 +45,18 @@ const SignUpPage = () => {
         <BaseTextInput 
           title="Email"
           handlePlaceHolder="Lütfen Email adresinizi giriniz"
+          handleOnChangeText={setEmail}
         />
         <BaseTextInput 
           title="Şifre"
           handlePlaceHolder="Şifreniz 5 karakterden fazla olsun"
           isSecureTextEntry={true}
+          handleOnChangeText={setPassword}
         />
         <BaseTextInput
           title="Anonim İsim"
           handlePlaceHolder="Anonim isminizi giriniz"
+          handleOnChangeText={setFakeName}
         />
       </View>
       <View style={styles.Footer}>
@@ -37,7 +65,7 @@ const SignUpPage = () => {
           buttonColor="deepskyblue"
           setWidht="80%"
           buttonColorPressed="gray"
-          handleOnPress={()=>navigation.navigate("Api")}
+          handleOnPress={()=>SignUpUser()}
         />
         <BaseButton
           title="Hesabın Var mı? o zaman GİRİŞ yap"
