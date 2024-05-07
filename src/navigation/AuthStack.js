@@ -16,7 +16,6 @@ const AuthStack = () => {
         <Stack.Screen name='Welcome' component={WelcomePage} />
         <Stack.Screen name='Api' component={ApiPage} />
         <Stack.Screen name='Poems' component={PoemsPage}/>
-        
     </Stack.Navigator>
   )
 }

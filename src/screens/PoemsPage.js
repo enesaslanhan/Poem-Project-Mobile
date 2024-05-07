@@ -8,6 +8,7 @@ const PoemsPage = ({route}) => {
   const [index, setIndex] = useState(0);
   const[score,setScore]=useState();
   const {BaseuserId}=route.params;
+  const [refreshing,setRefreshing]=useState(false)
   const poemScoreModel={
     id:0,
     poemId:null,
@@ -28,6 +29,11 @@ const PoemsPage = ({route}) => {
         console.error("Error fetching poems:", error);
       }
     };
+    if (refreshing) {
+      setTimeout(()=>{
+        setRefreshing(false);
+      },1000)
+    }
     
     getAllPoems();  
   }, []);
@@ -53,9 +59,9 @@ const PoemsPage = ({route}) => {
     poemScoreModel.score=parseInt(score);
     const response= await axios.post("http://192.168.1.61:81/api/poemscores/add",poemScoreModel)
     console.log(response.data)
-    if (response) {
+    if (response.data) {
       alert("puan verildi")
-      setScore("");
+      setRefreshing(true)
     }
     else{
       alert(response.data.message)

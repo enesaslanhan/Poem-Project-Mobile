@@ -23,7 +23,7 @@ const LoginPage = () => {
   }, [])
   
   AuhtControl=async()=>{
-    const response=await axios.get(`http://192.168.1.61:81/api/users/getbyemail?email=${email}`)
+    const response=await axios.get(`http://192.168.137.1:81/api/users/getbyemail?email=${email}`)
     console.log(response.data)
     if (response.data.data) {
       if (response.data.data.password==password) {
