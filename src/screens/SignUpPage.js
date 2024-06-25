@@ -20,7 +20,7 @@ const SignUpPage = () => {
     UserModel.email=email;
     UserModel.fakeName=fakeName;
     UserModel.password=password
-    const response = await axios.post('http://192.168.1.61:81/api/users/add',UserModel)
+    const response = await axios.post('http://192.168.137.1:81/api/users/add',UserModel)
     console.log(response.data)
     if (response.data.succes) {
       alert(response.data.message)

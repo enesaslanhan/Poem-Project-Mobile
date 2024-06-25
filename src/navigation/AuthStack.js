@@ -6,6 +6,8 @@ import SignUpPage from '../screens/SignUpPage';
 import WelcomePage from '../screens/WelcomePage';
 import ApiPage from '../screens/ApiPage';
 import PoemsPage from '../screens/PoemsPage';
+import WritePoem from '../screens/WritePoem';
+import BestPoem from '../screens/BestPoem';
 const Stack=createNativeStackNavigator();
 
 const AuthStack = () => {
@@ -16,6 +18,8 @@ const AuthStack = () => {
         <Stack.Screen name='Welcome' component={WelcomePage} />
         <Stack.Screen name='Api' component={ApiPage} />
         <Stack.Screen name='Poems' component={PoemsPage}/>
+        <Stack.Screen name='WritePoem' component={WritePoem}/>
+        <Stack.Screen name='BestPoem' component={BestPoem}/>
     </Stack.Navigator>
   )
 }

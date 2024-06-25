@@ -3,12 +3,16 @@ import React, { useState, useEffect } from "react";
 import BaseButton from "../components/BaseButton";
 import BaseTextInput from "../components/BaseTextInput";
 import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
+
 const PoemsPage = ({route}) => {
   const [poems, setPoems] = useState([]);
   const [index, setIndex] = useState(0);
   const[score,setScore]=useState();
   const {BaseuserId}=route.params;
   const [refreshing,setRefreshing]=useState(false)
+  const navigation = useNavigation();
+
   const poemScoreModel={
     id:0,
     poemId:null,
@@ -20,7 +24,7 @@ const PoemsPage = ({route}) => {
     const getAllPoems = async () => {
       try {
         const response = await axios.get(
-          "http://192.168.1.61:81/api/poems/getall"
+          "http://192.168.137.1:81/api/poems/getall"
         );
         setPoems(response.data.data);
         console.log(BaseuserId)
@@ -57,7 +61,7 @@ const PoemsPage = ({route}) => {
     poemScoreModel.userId=BaseuserId;
     poemScoreModel.poemId=poems[index].id
     poemScoreModel.score=parseInt(score);
-    const response= await axios.post("http://192.168.1.61:81/api/poemscores/add",poemScoreModel)
+    const response= await axios.post("http://192.168.137.1:81/api/poemscores/add",poemScoreModel)
     console.log(response.data)
     if (response.data) {
       alert("puan verildi")
@@ -136,6 +140,15 @@ const PoemsPage = ({route}) => {
           buttonColor="red"
           buttonColorPressed="black"    
           handleOnPress={()=>setPeomScore()}     
+        />
+      </View>
+      <View style={{width:"100%",alignItems:"center"}}>
+        <BaseButton
+          buttonColor="black"
+          setWidht="80%"
+          title="Sende Kendi Şiirini Yaz"
+          buttonColorPressed="gray"
+          handleOnPress={()=>navigation.navigate("WritePoem",{userId:BaseuserId})}
         />
       </View>
     </SafeAreaView>
